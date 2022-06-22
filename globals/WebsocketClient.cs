@@ -11,7 +11,7 @@ public class WebsocketClient : Node
     private ClickInputHandler _clickInputHandler;
 
     [Signal]
-    delegate void MovementRequest(string userId, Vector2 desiredDestination);
+    delegate void MovementRequest(string clientId, Vector2 desiredDestination);
 
     public override void _Ready()
     {
@@ -30,16 +30,16 @@ public class WebsocketClient : Node
         EmitSignal(nameof(MovementRequest), _clientId, movementDestination);
     }
 
-    private void _OnLoginEvent(string userId, Vector2 spawnPosition)
+    private void _OnLoginEvent(string clientId, Vector2 spawnPosition)
     {
         var character = (Character) GD.Load<PackedScene>("res://actors/Character/Character.tscn").Instance();
-        character.Id = userId;
+        character.Id = clientId;
         character.Position = spawnPosition;
         GetTree().CurrentScene.AddChild(character);
 
-        GD.Print($"User {userId} spawned in at {spawnPosition}");
+        GD.Print($"User {clientId} spawned in at {spawnPosition}");
 
-        if (userId == _clientId)
+        if (clientId == _clientId)
         {
             var camera = (Node2D) GetTree().CurrentScene.FindNode("MainCamera");
             character.SetRemoteTransformTarget(camera);

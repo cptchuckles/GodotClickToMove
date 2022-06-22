@@ -5,7 +5,7 @@ using System.Linq;
 public class RemoteServerStub : Node
 {
     [Signal]
-    delegate void LoginEvent(string userId, Vector2 spawnPosition);
+    delegate void LoginEvent(string clientId, Vector2 spawnPosition);
     [Signal]
     delegate void MovementEvent(string clientId, Vector2 destination);
 
