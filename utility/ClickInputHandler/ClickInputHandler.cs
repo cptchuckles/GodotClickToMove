@@ -24,6 +24,7 @@ public class ClickInputHandler : Node2D
             _destination = GetGlobalMousePosition();
             _clickMarker.GlobalPosition = _destination;
             _clickMarker.Show();
+            GetTree().CreateTimer(0.1f).Connect("timeout", _clickMarker, "hide");
 
             _client.RequestMovement(_destination);
         }
