@@ -12,6 +12,8 @@ public class WebsocketClient : Node
 
     [Signal]
     delegate void MovementRequest(string clientId, Vector2 desiredDestination);
+    [Signal]
+    delegate void LoginRequest(string clientId);
 
     public override void _Ready()
     {
@@ -20,8 +22,11 @@ public class WebsocketClient : Node
         _remoteServer.Connect("LoginEvent", this, "_OnLoginEvent");
         _remoteServer.Connect("MovementEvent", this, "_OnMovementEvent");
 
-        // This makes the server listen to my event
+        // This makes the server listen to my requests
+        Connect(nameof(LoginRequest), _remoteServer, "_OnClientLoginRequest");
         Connect(nameof(MovementRequest), _remoteServer, "_OnClientMovementRequest");
+
+        EmitSignal(nameof(LoginRequest), _clientId);
     }
 
     public void RequestMovement(Vector2 movementDestination)

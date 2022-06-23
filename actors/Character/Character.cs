@@ -3,7 +3,7 @@ using System;
 
 public class Character : KinematicBody2D
 {
-    public string Id = "";
+    public string Id;
 
     [Export]
     private float _speed = 200.0f;

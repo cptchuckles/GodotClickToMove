@@ -9,20 +9,13 @@ public class RemoteServerStub : Node
     [Signal]
     delegate void MovementEvent(string clientId, Vector2 destination);
 
-    public override void _Ready()
+    public void _OnClientLoginRequest(string clientId)
     {
-        // Emit a LoginEvent for User with Id 86e7561c-d7e6-4582-becb-43a0543bac08 after 1 second
-        // This gives WebsocketClient enough time to spawn in and connect to the LoginEvent signal
-        // so that when it emits, something actually happens.
-        // The delay is artificial.
-        // I'm just pretending that the remote server responds to the client's login request, telling it
-        // what its User.Id is and its spawn position -- data that would be coming from the database
-        // upon a successful login attempt by a user trying to play the game.
-        GetTree().CreateTimer(1).Connect("timeout", this, "emit_signal", new Godot.Collections.Array() {
-                nameof(LoginEvent),
-                "86e7561c-d7e6-4582-becb-43a0543bac08",
-                new Vector2(360, 240)
-                });
+        // Pretend this server is doing some authentication bullshit now...
+
+        // In practice, the spawn position would be pulled from DB, but for this example
+        // just spawn in the middle of the viewport
+        EmitSignal(nameof(LoginEvent), clientId, GetViewport().Size / 2f);
     }
 
     public void _OnClientMovementRequest(string clientId, Vector2 desiredDestination)
